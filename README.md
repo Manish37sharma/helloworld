@@ -48,3 +48,15 @@ Internship/
 
 └── README.md
 
+## Project Architecture
+
+The project follows a modular structure to separate application
+logic, configuration, routes, and testing.
+
+- `hello.py` - Application entry point
+- `app/` - Main application package
+- `routes.py` - Application/API routes
+- `config.py` - Application configuration
+- `tests/` - Automated tests
+- `requirements.txt` - Python dependencies
+- `.gitignore` - Files excluded from Git
