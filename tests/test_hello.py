@@ -34,3 +34,31 @@ def test_create_user():
     assert response.status_code == 201
     assert response.json["message"] == "User created successfully"
     assert response.json["user"]["name"] == "Manish Sharma"
+    
+def test_create_user_without_name():
+    client = app.test_client()
+
+    response = client.post(
+        "/api/user",
+        json={
+            "email": "manish@example.com",
+            "role": "Software Developer Intern"
+        }
+    )
+
+    assert response.status_code == 400
+    assert response.json["error"] == "Name is required"
+    
+def test_create_user_without_email():
+    client = app.test_client()
+
+    response = client.post(
+        "/api/user",
+        json={
+            "name": "Manish Sharma",
+            "role": "Software Developer Intern"
+        }
+    )
+
+    assert response.status_code == 400
+    assert response.json["error"] == "Email is required"
