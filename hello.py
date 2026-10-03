@@ -1,6 +1,31 @@
 from flask import Flask, jsonify, request
+import sqlite3
 
 app = Flask(__name__)
+
+DATABASE = "users.db"
+
+
+def get_db_connection():
+    connection = sqlite3.connect(DATABASE)
+    connection.row_factory = sqlite3.Row
+    return connection
+
+
+def create_table():
+    connection = get_db_connection()
+
+    connection.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            email TEXT NOT NULL,
+            role TEXT NOT NULL
+        )
+    """)
+
+    connection.commit()
+    connection.close()
 
 
 @app.route("/")
@@ -38,14 +63,29 @@ def create_user():
     if not role:
         return jsonify({"error": "Role is required"}), 400
 
+    connection = get_db_connection()
+
+    cursor = connection.execute(
+        """
+        INSERT INTO users (name, email, role)
+        VALUES (?, ?, ?)
+        """,
+        (name, email, role)
+    )
+
+    connection.commit()
+
+    user_id = cursor.lastrowid
+
+    connection.close()
+
     return jsonify({
         "message": "User created successfully",
-        "user": {
-            "name": name,
-            "email": email,
-            "role": role
-        }
+        "user_id": user_id
     }), 201
+
+
+create_table()
 
 
 if __name__ == "__main__":
