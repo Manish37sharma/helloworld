@@ -60,3 +60,20 @@ logic, configuration, routes, and testing.
 - `tests/` - Automated tests
 - `requirements.txt` - Python dependencies
 - `.gitignore` - Files excluded from Git
+
+## Testing
+
+The project uses Pytest for automated testing.
+
+Run the tests with:
+
+```bash
+python -m pytest
+
+
+Then:
+
+```powershell
+git add .
+git commit -m "Document testing setup"
+git push
